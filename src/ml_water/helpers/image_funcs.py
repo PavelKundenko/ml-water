@@ -1,3 +1,4 @@
+from PIL import Image  # Use Pillow to save in formats like JPG, PNG
 from typing import Any
 import os
 import shutil
@@ -35,6 +36,22 @@ def visualize_image(
 
   plt.axis('off')
   plt.show()
+
+
+def save_image(image: np.ndarray, file_path: str, image_format="PNG"):
+  # If the file exists, remove it
+  if os.path.exists(file_path):
+    os.remove(file_path)
+
+  # Convert the image from 1-channel to 3-channel if necessary
+  if len(image.shape) == 2:  # Grayscale image, we need to convert it to RGB
+    image = np.stack([image] * 3, axis=-1)
+
+  # Normalize the image to be between 0 and 255 for saving as a readable image
+  image = (image * 255).astype(np.uint8)
+
+  # Save the image using PIL
+  Image.fromarray(image).save(file_path, format=image_format)
 
 
 def split_image(image_normalized: np.ndarray[Any, np.dtype], patch_size=512):

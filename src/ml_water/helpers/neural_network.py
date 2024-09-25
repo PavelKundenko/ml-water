@@ -109,6 +109,41 @@ def train_nn_to_target_loss(
   print(f"Training completed. Target loss achieved: {current_loss:.4f}. Duration: {duration:.2f} seconds")
 
 
+def train_nn_for_fixed_cycles(
+    model,
+    device,
+    epochs,
+    patch_size,
+    image_paths,
+    mask_paths,
+    cycles
+):
+  start_time = time.time()  # Start time tracking
+
+  for iteration in range(1, cycles + 1):
+    print(f'Starting training iteration #{iteration}')
+
+    # Randomly select patch_size items from image_paths and mask_paths
+    selected_indices = random.sample(range(len(image_paths)), patch_size)
+    selected_image_paths = [image_paths[i] for i in selected_indices]
+    selected_mask_paths = [mask_paths[i] for i in selected_indices]
+
+    print(f'Selected images for iteration #{iteration}: {selected_indices}')
+
+    # Create the dataloader with the selected items
+    dataloader = create_dataloader(selected_image_paths, selected_mask_paths)
+
+    # Train the model for the specified number of epochs
+    current_loss = train_nn(model, dataloader, epochs, device)
+
+    print(f'Training iteration #{iteration} completed. Loss: {current_loss:.4f}')
+
+  end_time = time.time()  # End time tracking
+  duration = end_time - start_time  # Calculate duration
+
+  print(f"Training completed after {cycles} cycles. Duration: {duration:.2f} seconds")
+
+
 # Function to calculate metrics
 def evaluate_nn(model, dataloader, device):
   model.eval()  # Set the model to evaluation mode

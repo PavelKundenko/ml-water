@@ -86,6 +86,8 @@ threadpoolctl==3.5.0
 torch==2.4.0
     # via ml-water
     # via torchvision
+torchsummary==1.5.1
+    # via ml-water
 torchvision==0.19.0
     # via ml-water
 typing-extensions==4.12.2

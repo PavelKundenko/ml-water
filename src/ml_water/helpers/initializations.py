@@ -1,3 +1,4 @@
+from torchsummary import summary
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 
@@ -5,12 +6,15 @@ from ml_water.classes.unet import UNet
 from ml_water.classes.dataset import Sentinel2Dataset
 
 from ml_water.helpers.nn_state import load_state_nn
+from ml_water.helpers.constants import PATCH_SIZE
 
 
 def create_model(in_channels=3, out_channels=1):
   model = UNet(in_channels=in_channels, out_channels=out_channels)
 
   load_state_nn(model)
+
+  summary(model, input_size=(in_channels, PATCH_SIZE, PATCH_SIZE))
 
   return model
 

@@ -1,5 +1,5 @@
 from ml_water.helpers.initializations import create_model, create_dataloader
-from ml_water.helpers.neural_network import evaluate_nn, train_nn_to_target_loss
+from ml_water.helpers.neural_network import evaluate_nn, train_nn_to_target_loss, train_nn_for_fixed_cycles
 from ml_water.helpers.image_funcs import get_images_and_masks, get_top_images_and_masks
 from ml_water.helpers.path import resolve_path
 from ml_water.helpers.constants import IMAGE_PATCHES_PATH, MASK_PATCHES_PATH
@@ -20,7 +20,7 @@ train_images_indexes = (154, 438)
 train_image_paths, train_mask_paths = get_top_images_and_masks(
   image_path=resolve_path(IMAGE_PATCHES_PATH),
   mask_path=resolve_path(MASK_PATCHES_PATH),
-  patches_number=48,
+  patches_number=128,
 )
 
 train_nn_to_target_loss(
@@ -32,6 +32,16 @@ train_nn_to_target_loss(
   image_paths=train_image_paths,
   mask_paths=train_mask_paths,
 )
+
+# train_nn_for_fixed_cycles(
+#   model=model,
+#   device=device,
+#   epochs=10,
+#   patch_size=16,
+#   image_paths=train_image_paths,
+#   mask_paths=train_mask_paths,
+#   cycles=5,
+# )
 
 # train_image_paths, train_mask_paths = get_images_and_masks_random(
 #   image_path=resolve_path(IMAGE_PATCHES_PATH),
